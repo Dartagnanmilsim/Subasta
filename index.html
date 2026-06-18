@@ -4,6 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
+
 <title>SubastaPro</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,60 +20,75 @@
 <div class="app">
 
 
-<section class="hero">
+<!-- VISTA SUBASTA -->
 
-<img id="foto" class="producto">
+
+<div class="card">
+
+<img id="imagenSubasta" class="imagen">
+
 
 <h1 id="titulo">
-Subasta activa
+Subasta
 </h1>
 
 
 <p>Precio base</p>
 
-<h2 id="baseVista">
+<h2 id="base">
 $0
 </h2>
 
 
-<div class="oferta">
+<div class="ganando">
 
 🔥 Oferta más alta
 
-<h1 id="precio">
+<h1 id="actual">
 $0
 </h1>
 
-<span id="lider">
-Sin ofertas
-</span>
+
+<p>
+Ganando:
+<b id="lider">---</b>
+</p>
+
 
 </div>
 
 
 <button onclick="ofertar()">
-Hacer puja
+
+PUJAR
+
 </button>
 
 
-</section>
+</div>
 
 
 
-<section class="ranking">
-
-<h2>🏆 Top 5 ofertas</h2>
-
-<div id="ranking"></div>
-
-</section>
+<!-- TOP -->
 
 
+<div class="card">
+
+<h2>🏆 TOP 5</h2>
+
+<ol id="ranking"></ol>
+
+</div>
 
 
-<section class="panel">
 
-<h2>Registro ofertante</h2>
+
+<!-- REGISTRO -->
+
+
+<div class="card">
+
+<h2>Registro</h2>
 
 
 <input id="nombre" placeholder="Nombre">
@@ -81,39 +97,41 @@ Hacer puja
 
 <input id="correo" placeholder="Correo">
 
-<input id="ciudad" placeholder="Ciudad">
+
+</div>
 
 
-</section>
 
 
-
-<section class="panel">
-
-<h2>Crear subasta</h2>
+<!-- ADMIN -->
 
 
-<input id="clave" placeholder="Clave admin">
+<div class="card">
+
+<h2>Administrador</h2>
+
+
+<input id="clave" placeholder="Clave">
 
 <input id="producto" placeholder="Producto">
 
-<input id="imagen" placeholder="URL foto">
+<input id="foto" placeholder="URL imagen">
 
-<input id="base" type="number" placeholder="Precio base">
+<input id="precioBase" type="number" placeholder="Precio base">
 
 <input id="incremento" type="number" placeholder="Incremento">
 
-<input id="fin" type="datetime-local">
+<input id="cierre" type="datetime-local">
 
 
 <button onclick="crearSubasta()">
 
-Crear
+Crear Subasta
 
 </button>
 
 
-</section>
+</div>
 
 
 </div>
@@ -125,8 +143,6 @@ Crear
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-
-<script src="firebase.js"></script>
 
 <script src="script.js"></script>
 
