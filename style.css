@@ -1,94 +1,85 @@
 body{
-
 margin:0;
 font-family:Arial, Helvetica, sans-serif;
-background:#f4f4f4;
-
-}
-
-
-.app{
-
-max-width:480px;
-margin:auto;
+background:#f3f4f6;
 padding:15px;
-
-}
-
-
-.card{
-
-background:white;
-padding:18px;
-margin-bottom:18px;
-border-radius:20px;
-box-shadow:0 5px 15px #cccccc;
-
-}
-
-
-.imagen{
-
-width:100%;
-max-height:300px;
-object-fit:cover;
-border-radius:18px;
-
 }
 
 
 h1,h2{
-
 text-align:center;
-
-}
-
-
-.ganando{
-
-background:#111;
-color:white;
-padding:15px;
-border-radius:15px;
-text-align:center;
-
-}
-
-
-#actual{
-
-font-size:40px;
-
 }
 
 
 button{
-
 width:100%;
 padding:15px;
-background:#ff9800;
-border:0;
+margin-top:12px;
+border:none;
 border-radius:15px;
-font-size:18px;
+background:#ff9800;
+font-size:17px;
 font-weight:bold;
-
 }
 
 
-input{
-
+input,textarea{
 width:100%;
 padding:13px;
-margin-top:8px;
+margin-top:10px;
 border-radius:12px;
-border:1px solid #ddd;
+border:1px solid #ccc;
+box-sizing:border-box;
+}
 
+
+.pantalla{
+display:none;
+background:white;
+padding:18px;
+border-radius:20px;
+margin-top:20px;
+box-shadow:0 5px 15px #ccc;
+}
+
+
+#menu{
+background:white;
+padding:20px;
+border-radius:20px;
+box-shadow:0 5px 15px #ccc;
+}
+
+
+.foto{
+width:100%;
+max-height:300px;
+object-fit:cover;
+border-radius:20px;
+}
+
+
+.precio{
+background:#111;
+color:white;
+text-align:center;
+padding:20px;
+border-radius:20px;
+margin:15px 0;
+}
+
+
+#valorActual{
+font-size:42px;
+}
+
+
+ol{
+padding-left:20px;
 }
 
 
 li{
-
-padding:10px;
+padding:12px;
 border-bottom:1px solid #ddd;
-
 }
