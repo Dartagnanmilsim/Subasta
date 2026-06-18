@@ -2,70 +2,80 @@
 <html lang="es">
 
 <head>
+
 <meta charset="UTF-8">
 <title>SubastaPro</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
-<h1>🔨 SubastaPro</h1>
+
+<div class="app">
 
 
-<div class="card">
+<section class="hero">
 
-<h2>Administrador</h2>
+<img id="foto" class="producto">
 
-<input id="clave" placeholder="Clave administrador">
-
-<input id="producto" placeholder="Producto">
-
-<input id="imagen" placeholder="URL imagen">
-
-<input id="base" type="number" placeholder="Precio base">
-
-<input id="incremento" type="number" placeholder="Incremento mínimo">
-
-<input id="fin" type="datetime-local">
+<h1 id="titulo">
+Subasta activa
+</h1>
 
 
-<button onclick="crearSubasta()">
-Crear Subasta
-</button>
+<p>Precio base</p>
 
-</div>
-
-
-
-<div class="card">
-
-<h2 id="titulo">
-Esperando subasta
+<h2 id="baseVista">
+$0
 </h2>
 
-<img id="foto">
 
-<h3>Oferta actual</h3>
+<div class="oferta">
 
-<div id="precio">
+🔥 Oferta más alta
+
+<h1 id="precio">
 $0
+</h1>
+
+<span id="lider">
+Sin ofertas
+</span>
+
 </div>
 
-<p>
-Finaliza:
-<span id="termina"></span>
-</p>
 
-</div>
+<button onclick="ofertar()">
+Hacer puja
+</button>
 
 
+</section>
 
-<div class="card">
 
-<h2>Datos ofertante</h2>
 
-<input id="nombre" placeholder="Nombre completo">
+<section class="ranking">
+
+<h2>🏆 Top 5 ofertas</h2>
+
+<div id="ranking"></div>
+
+</section>
+
+
+
+
+<section class="panel">
+
+<h2>Registro ofertante</h2>
+
+
+<input id="nombre" placeholder="Nombre">
 
 <input id="celular" placeholder="Celular">
 
@@ -74,25 +84,47 @@ Finaliza:
 <input id="ciudad" placeholder="Ciudad">
 
 
-<button onclick="ofertar()">
-OFERTAR
+</section>
+
+
+
+<section class="panel">
+
+<h2>Crear subasta</h2>
+
+
+<input id="clave" placeholder="Clave admin">
+
+<input id="producto" placeholder="Producto">
+
+<input id="imagen" placeholder="URL foto">
+
+<input id="base" type="number" placeholder="Precio base">
+
+<input id="incremento" type="number" placeholder="Incremento">
+
+<input id="fin" type="datetime-local">
+
+
+<button onclick="crearSubasta()">
+
+Crear
+
 </button>
 
+
+</section>
+
+
 </div>
 
 
-<div class="card">
-
-<h2>🏆 Ranking ofertas</h2>
-
-<ul id="ranking"></ul>
-
-</div>
 
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 
 <script src="firebase.js"></script>
 
