@@ -1,17 +1,17 @@
 let subasta = {};
 
 
-// ===========================
-// CREAR SUBASTA ADMIN
-// ===========================
+
+// =================
+// CREAR SUBASTA
+// =================
 
 function crearSubasta(){
 
 
 if(clave.value !== "1234"){
 
-alert("Clave administrador incorrecta");
-
+alert("Clave incorrecta");
 return;
 
 }
@@ -19,19 +19,19 @@ return;
 
 db.ref("subasta").set({
 
-producto: producto.value,
+producto:producto.value,
 
-imagen: imagen.value,
+imagen:imagen.value,
 
-precio: Number(base.value),
+base:Number(valorBase.value),
 
-incremento: Number(incremento.value),
+precio:Number(valorBase.value),
 
-fin: fin.value,
+incremento:Number(incremento.value),
 
-estado: "ACTIVA",
+fin:fechaFin.value,
 
-creada: new Date().toLocaleString()
+estado:"ACTIVA"
 
 });
 
@@ -39,23 +39,26 @@ creada: new Date().toLocaleString()
 db.ref("ofertas").remove();
 
 
-alert("Subasta creada correctamente");
+alert("Subasta creada");
 
 
 }
 
 
 
-// ===========================
-// HACER OFERTA
-// ===========================
-
-function ofertar(){
 
 
-if(!subasta.estado){
+// =================
+// OFERTAR
+// =================
 
-alert("No hay subasta activa");
+
+function hacerOferta(){
+
+
+if(!nombre.value){
+
+alert("Debes registrarte");
 
 return;
 
@@ -71,11 +74,9 @@ return;
 }
 
 
-
 if(new Date() > new Date(subasta.fin)){
 
-
-cerrarSubasta();
+db.ref("subasta/estado").set("FINALIZADA");
 
 alert("Tiempo terminado");
 
@@ -85,149 +86,125 @@ return;
 
 
 
-// incremento automático
-
-let nuevoValor =
+let nuevo =
 
 subasta.precio + subasta.incremento;
 
 
 
-let oferta = {
+let oferta={
 
-nombre: nombre.value,
+nombre:nombre.value,
 
-celular: celular.value,
+celular:celular.value,
 
-correo: correo.value,
+correo:correo.value,
 
-ciudad: ciudad.value,
+valor:nuevo,
 
-valor: nuevoValor,
-
-fecha: new Date().toLocaleString()
+fecha:new Date().toLocaleString()
 
 };
 
 
 
-// guardar oferta
-
 db.ref("ofertas").push(oferta);
 
 
-
-// actualizar precio actual
-
-db.ref("subasta/precio").set(nuevoValor);
-
+db.ref("subasta/precio").set(nuevo);
 
 
 }
 
 
 
-// ===========================
-// ESCUCHAR SUBASTA EN VIVO
-// ===========================
 
 
-db.ref("subasta").on("value", snapshot => {
+// =================
+// ACTUALIZAR SUBASTA
+// =================
 
 
-if(!snapshot.exists()) return;
+db.ref("subasta").on("value", dato=>{
 
 
-subasta = snapshot.val();
+if(!dato.exists()) return;
 
 
-titulo.innerHTML = subasta.producto;
+subasta=dato.val();
 
 
-precio.innerHTML =
-
-"$" + subasta.precio.toLocaleString();
+nombreProducto.innerHTML=subasta.producto;
 
 
-termina.innerHTML = subasta.fin;
+fotoProducto.src=subasta.imagen;
 
 
-foto.src = subasta.imagen;
+precioBase.innerHTML=
+
+"$"+subasta.base.toLocaleString();
 
 
-});
+ofertaActual.innerHTML=
 
-
-
-// ===========================
-// RANKING EN VIVO
-// ===========================
-
-
-db.ref("ofertas").on("value", snapshot => {
-
-
-ranking.innerHTML = "";
-
-
-let datos = [];
-
-
-snapshot.forEach(item => {
-
-
-datos.push(item.val());
+"$"+subasta.precio.toLocaleString();
 
 
 });
 
 
 
-datos.sort((a,b)=>{
 
-return b.valor - a.valor;
+
+
+// =================
+// TOP 5 EN VIVO
+// =================
+
+
+db.ref("ofertas").on("value", dato=>{
+
+
+let lista=[];
+
+
+dato.forEach(x=>{
+
+lista.push(x.val());
 
 });
 
 
 
-datos.forEach((o,index)=>{
+lista.sort((a,b)=>b.valor-a.valor);
 
 
-let medalla="";
+
+top.innerHTML="";
 
 
-if(index===0){
 
-medalla="🥇 ";
+lista.slice(0,5).forEach((x,i)=>{
 
-}else if(index===1){
 
-medalla="🥈 ";
+if(i===0){
 
-}else if(index===2){
-
-medalla="🥉 ";
+ganadorActual.innerHTML=x.nombre;
 
 }
 
 
+top.innerHTML +=
 
-ranking.innerHTML += `
+`
 
 <li>
 
-${medalla}
-
-${o.nombre}
+<strong>${x.nombre}</strong>
 
 <br>
 
-$${o.valor.toLocaleString()}
-
-<br>
-
-${o.fecha}
+$${x.valor.toLocaleString()}
 
 </li>
 
@@ -239,43 +216,3 @@ ${o.fecha}
 
 
 });
-
-
-
-
-// ===========================
-// CIERRE DE SUBASTA
-// ===========================
-
-
-function cerrarSubasta(){
-
-
-db.ref("subasta/estado").set("FINALIZADA");
-
-
-db.ref("ofertas")
-
-.orderByChild("valor")
-
-.limitToLast(1)
-
-.once("value", snap=>{
-
-
-snap.forEach(x=>{
-
-
-let ganador = x.val();
-
-
-db.ref("ganador").set(ganador);
-
-
-});
-
-
-});
-
-
-}
