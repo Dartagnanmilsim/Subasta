@@ -23,41 +23,32 @@
 
 <div class="card">
 
-
 <button onclick="mostrar('adminLogin')">
 ⚙️ Administrador
 </button>
-
 
 <button onclick="mostrar('loginUsuario')">
 🔥 Subastas en curso
 </button>
 
-
 <button onclick="mostrar('registro')">
 👤 Crear usuario
 </button>
-
 
 </div>
 
 
 
-
-<!-- CREAR USUARIO -->
+<!-- REGISTRO -->
 
 
 <section id="registro" class="pantalla card">
 
-
 <h2>Crear usuario</h2>
-
 
 <input id="nombre" placeholder="Nombre completo">
 
-
-<input id="usuario" placeholder="Usuario subasta">
-
+<input id="usuario" placeholder="Usuario">
 
 <input id="password" type="password" placeholder="Contraseña">
 
@@ -77,8 +68,8 @@ Crear usuario
 
 </button>
 
-
 </section>
+
 
 
 
@@ -89,19 +80,16 @@ Crear usuario
 
 <section id="loginUsuario" class="pantalla card">
 
-
 <h2>Ingreso participante</h2>
 
-
 <input id="loginUser" placeholder="Usuario">
-
 
 <input id="loginPass" type="password" placeholder="Contraseña">
 
 
 <button onclick="entrarUsuario()">
 
-Entrar a subastas
+Entrar
 
 </button>
 
@@ -118,21 +106,19 @@ Entrar a subastas
 
 <section id="adminLogin" class="pantalla card">
 
-
 <h2>Administrador</h2>
 
-
-<input id="clave" type="password" placeholder="Clave">
+<input id="clave" type="password" placeholder="Clave administrador">
 
 
 <button onclick="loginAdmin()">
 
-Entrar
+Ingresar
 
 </button>
 
-
 </section>
+
 
 
 
@@ -150,20 +136,30 @@ Entrar
 
 
 <h3 id="totalUsuarios">
-
-Usuarios: 0
-
+Usuarios inscritos: 0
 </h3>
 
 
 
-<h2>Crear subasta</h2>
+<h2>Nueva subasta</h2>
 
 
-<input id="titulo" placeholder="Producto">
+<input id="titulo" placeholder="Nombre producto">
 
 
-<input id="imagen" placeholder="URL imagen">
+<input 
+id="imagenArchivo"
+type="file"
+accept="image/*"
+onchange="cargarImagen(event)"
+>
+
+
+<img 
+id="previewImagen"
+class="foto"
+style="display:none"
+>
 
 
 <textarea id="descripcion" placeholder="Descripción"></textarea>
@@ -172,7 +168,7 @@ Usuarios: 0
 <input id="base" type="number" placeholder="Precio base">
 
 
-<input id="incremento" type="number" placeholder="Incremento">
+<input id="incremento" type="number" placeholder="Incremento mínimo">
 
 
 <input id="fin" type="datetime-local">
@@ -190,6 +186,7 @@ Crear subasta
 <h2>Subastas creadas</h2>
 
 <div id="adminSubastas"></div>
+
 
 
 
@@ -225,6 +222,7 @@ Crear subasta
 
 
 
+
 <!-- DETALLE -->
 
 
@@ -240,14 +238,19 @@ Crear subasta
 <p id="texto"></p>
 
 
+
 <div class="oferta">
 
 
-🔥 VA GANANDO
+🔥 Oferta más alta
 
 
 <h1 id="precio">$0</h1>
 
+
+Ganando:
+
+<br>
 
 <b id="lider">---</b>
 
@@ -270,7 +273,9 @@ PUJAR
 <ol id="ranking"></ol>
 
 
+
 </section>
+
 
 
 
@@ -279,11 +284,11 @@ PUJAR
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 
 <script src="script.js"></script>
-
 
 
 </body>
