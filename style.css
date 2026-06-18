@@ -72,7 +72,6 @@ label{
 
 display:block;
 margin-top:15px;
-font-size:16px;
 
 }
 
@@ -107,12 +106,36 @@ font-size:45px;
 }
 
 
+#tiempoRestante{
+
+font-size:28px;
+
+}
+
+
+#estadoFinal{
+
+color:#ff9800;
+
+}
+
+
 .item{
 
 background:#fafafa;
 padding:15px;
 border-radius:18px;
 margin-bottom:15px;
+
+}
+
+
+.usuario{
+
+background:#eeeeee;
+padding:12px;
+border-radius:12px;
+margin-bottom:10px;
 
 }
 
@@ -130,15 +153,5 @@ li{
 font-size:18px;
 padding:12px;
 border-bottom:1px solid #ddd;
-
-}
-
-
-.usuario{
-
-background:#eeeeee;
-padding:12px;
-border-radius:12px;
-margin-bottom:10px;
 
 }
