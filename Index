@@ -1,1 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+<meta charset="UTF-8">
+<title>SubastaPro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>🔨 SubastaPro</h1>
+
+
+<div class="card">
+
+<h2>Administrador</h2>
+
+<input id="clave" placeholder="Clave administrador">
+
+<input id="producto" placeholder="Producto">
+
+<input id="imagen" placeholder="URL imagen">
+
+<input id="base" type="number" placeholder="Precio base">
+
+<input id="incremento" type="number" placeholder="Incremento mínimo">
+
+<input id="fin" type="datetime-local">
+
+
+<button onclick="crearSubasta()">
+Crear Subasta
+</button>
+
+</div>
+
+
+
+<div class="card">
+
+<h2 id="titulo">
+Esperando subasta
+</h2>
+
+<img id="foto">
+
+<h3>Oferta actual</h3>
+
+<div id="precio">
+$0
+</div>
+
+<p>
+Finaliza:
+<span id="termina"></span>
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>Datos ofertante</h2>
+
+<input id="nombre" placeholder="Nombre completo">
+
+<input id="celular" placeholder="Celular">
+
+<input id="correo" placeholder="Correo">
+
+<input id="ciudad" placeholder="Ciudad">
+
+
+<button onclick="ofertar()">
+OFERTAR
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>🏆 Ranking ofertas</h2>
+
+<ul id="ranking"></ul>
+
+</div>
+
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script src="firebase.js"></script>
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
