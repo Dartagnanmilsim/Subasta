@@ -2,8 +2,7 @@
 // FIREBASE
 // ==========================
 
-
-const firebaseConfig={
+const firebaseConfig = {
 
 apiKey:"TU_API_KEY",
 
@@ -16,40 +15,32 @@ projectId:"TU_ID"
 };
 
 
-
 firebase.initializeApp(firebaseConfig);
 
-const db=firebase.database();
+const db = firebase.database();
 
 
 
-
+// ==========================
 // VARIABLES
+// ==========================
 
-
-let usuarioActual=
-
+let usuarioActual =
 localStorage.getItem("usuarioSubasta");
 
+let subastaActual = "";
 
-let subastaActual="";
-
-
-let datosSubasta={};
-
+let datosSubasta = {};
 
 
 
 // ==========================
-// NAVEGACION
+// CAMBIO DE PANTALLAS
 // ==========================
-
 
 function mostrar(id){
 
-
 document.querySelectorAll(".pantalla")
-
 .forEach(p=>{
 
 p.style.display="none";
@@ -58,9 +49,7 @@ p.style.display="none";
 
 
 document.getElementById(id)
-
 .style.display="block";
-
 
 }
 
@@ -73,31 +62,34 @@ document.getElementById(id)
 // CREAR USUARIO
 // ==========================
 
-
 function crearUsuario(){
+
+
+let user = usuario.value.trim();
+
+
+if(!nombre.value){
+
+alert("Ingrese nombre");
+
+return;
+
+}
+
+
+if(!user){
+
+alert("Ingrese usuario");
+
+return;
+
+}
 
 
 
 if(!acepta.checked){
 
-
-alert("Debes aceptar pagar si ganas");
-
-return;
-
-}
-
-
-
-let id=
-
-usuario.value.trim();
-
-
-
-if(!id){
-
-alert("Ingresa usuario");
+alert("Debe aceptar pagar si gana");
 
 return;
 
@@ -106,10 +98,11 @@ return;
 
 
 
-db.ref("usuarios/"+id)
+db.ref("usuarios/"+user)
 
-.once("value",snap=>{
+.once("value")
 
+.then(snap=>{
 
 
 if(snap.exists()){
@@ -117,47 +110,52 @@ if(snap.exists()){
 
 alert("Usuario ya existe");
 
-
-}else{
-
+return;
 
 
-db.ref("usuarios/"+id)
+}
+
+
+
+
+db.ref("usuarios/"+user)
 
 .set({
 
 
 nombre:nombre.value,
 
-usuario:id,
+usuario:user,
 
 acepta:true,
 
-fecha:new Date().toLocaleString()
+fecha:
+new Date().toLocaleString()
 
 
-});
+})
 
+.then(()=>{
 
 
 localStorage.setItem(
 
 "usuarioSubasta",
 
-id
+user
 
 );
 
 
-usuarioActual=id;
+
+usuarioActual=user;
 
 
 
-alert("Usuario creado correctamente");
+alert("Usuario creado");
 
 
-
-}
+});
 
 
 });
@@ -172,7 +170,7 @@ alert("Usuario creado correctamente");
 
 
 // ==========================
-// ADMIN
+// LOGIN ADMIN
 // ==========================
 
 
@@ -181,6 +179,7 @@ function entrarAdmin(){
 
 
 if(clave.value!="1234"){
+
 
 alert("Clave incorrecta");
 
@@ -204,6 +203,7 @@ cargarAdmin();
 
 
 
+
 // ==========================
 // CREAR SUBASTA
 // ==========================
@@ -212,13 +212,25 @@ cargarAdmin();
 function crearSubasta(){
 
 
-let id=Date.now();
+
+if(!titulo.value){
+
+alert("Nombre obligatorio");
+
+return;
+
+}
 
 
 
-db.ref("subastas/"+id)
+let id=
 
-.set({
+"SUB_"+Date.now();
+
+
+
+let datos={
+
 
 
 titulo:titulo.value,
@@ -235,14 +247,56 @@ incremento:Number(incremento.value),
 
 fin:fin.value,
 
-estado:"ACTIVA"
+estado:"ACTIVA",
+
+fecha:
+new Date().toLocaleString()
 
 
-});
+};
+
+
+
+
+db.ref("subastas/"+id)
+
+.set(datos)
+
+.then(()=>{
 
 
 
 alert("Subasta creada");
+
+
+
+titulo.value="";
+
+imagen.value="";
+
+descripcion.value="";
+
+base.value="";
+
+incremento.value="";
+
+fin.value="";
+
+
+
+cargarAdmin();
+
+
+
+})
+
+.catch(e=>{
+
+
+alert(e.message);
+
+
+});
 
 
 }
@@ -253,29 +307,37 @@ alert("Subasta creada");
 
 
 
+
 // ==========================
-// PANEL ADMIN
+// ADMIN
 // ==========================
 
 
 function cargarAdmin(){
 
 
+// usuarios
+
 
 db.ref("usuarios")
 
-.on("value",s=>{
+.on("value",snap=>{
 
 
-let n=0;
+let total=0;
 
 
-s.forEach(()=>n++);
+snap.forEach(()=>{
+
+total++;
+
+});
+
 
 
 totalUsuarios.innerHTML=
 
-"Usuarios inscritos: "+n;
+"Usuarios inscritos: "+total;
 
 
 });
@@ -284,42 +346,76 @@ totalUsuarios.innerHTML=
 
 
 
+// subastas creadas
+
+
 db.ref("subastas")
 
-.on("value",s=>{
+.on("value",snap=>{
+
 
 
 adminSubastas.innerHTML="";
 
 
 
-s.forEach(x=>{
+if(!snap.exists()){
 
 
-let d=x.val();
+adminSubastas.innerHTML=
+
+"<p>No hay subastas</p>";
+
+return;
+
+
+}
 
 
 
-adminSubastas.innerHTML+=`
+snap.forEach(item=>{
+
+
+
+let s=item.val();
+
+
+
+adminSubastas.innerHTML += `
+
 
 <div class="subastaCard">
 
-<b>${d.titulo}</b>
 
-<br>
-
-$${d.precioActual.toLocaleString()}
+<h3>${s.titulo}</h3>
 
 
-<button class="eliminar"
+<p>
 
-onclick="eliminar('${x.key}')">
+Valor actual:
+
+<b>
+
+$${s.precioActual.toLocaleString()}
+
+</b>
+
+</p>
+
+
+
+<button 
+class="eliminar"
+
+onclick="eliminar('${item.key}')">
 
 Eliminar
 
 </button>
 
+
 </div>
+
 
 `;
 
@@ -328,6 +424,7 @@ Eliminar
 });
 
 
+
 });
 
 
@@ -339,13 +436,17 @@ Eliminar
 
 
 
+
 // ==========================
-// ELIMINAR
+// ELIMINAR SUBASTA
 // ==========================
 
 
 function eliminar(id){
 
+
+
+if(confirm("Eliminar subasta?")){
 
 
 db.ref("subastas/"+id)
@@ -356,13 +457,18 @@ db.ref("subastas/"+id)
 }
 
 
+}
+
+
+
+
 
 
 
 
 
 // ==========================
-// LISTAR ACTIVAS
+// SUBASTAS ACTIVAS
 // ==========================
 
 
@@ -376,43 +482,46 @@ mostrar("subastas");
 
 db.ref("subastas")
 
-.on("value",s=>{
+.on("value",snap=>{
+
 
 
 listaSubastas.innerHTML="";
 
 
 
-s.forEach(x=>{
+snap.forEach(item=>{
 
 
 
-let d=x.val();
+let s=item.val();
 
 
 
-if(d.estado=="ACTIVA"){
+if(s.estado==="ACTIVA"){
 
 
 
 listaSubastas.innerHTML+=`
 
+
 <div class="subastaCard">
 
-<img class="foto" src="${d.imagen}">
+
+<img class="foto" src="${s.imagen}">
 
 
-<h3>${d.titulo}</h3>
+<h2>${s.titulo}</h2>
 
 
-<h2>
+<h3>
 
-$${d.precioActual.toLocaleString()}
+$${s.precioActual.toLocaleString()}
 
-</h2>
+</h3>
 
 
-<button onclick="abrir('${x.key}')">
+<button onclick="abrir('${item.key}')">
 
 Entrar
 
@@ -421,10 +530,13 @@ Entrar
 
 </div>
 
+
 `;
 
 
+
 }
+
 
 
 });
@@ -454,9 +566,10 @@ function abrir(id){
 if(!usuarioActual){
 
 
-alert("Debes crear usuario primero");
+alert("Primero cree usuario");
 
 return;
+
 
 }
 
@@ -469,20 +582,27 @@ mostrar("detalle");
 
 
 
+
 db.ref("subastas/"+id)
 
-.on("value",s=>{
+.on("value",snap=>{
 
 
-datosSubasta=s.val();
+
+datosSubasta=snap.val();
 
 
-foto.src=datosSubasta.imagen;
+
+foto.src=
+
+datosSubasta.imagen;
+
 
 
 nombreSubasta.innerHTML=
 
 datosSubasta.titulo;
+
 
 
 texto.innerHTML=
@@ -491,22 +611,31 @@ datosSubasta.descripcion;
 
 
 
+
 valorActual.innerHTML=
 
-"$"+datosSubasta.precioActual.toLocaleString();
+"$"+
+
+datosSubasta.precioActual
+
+.toLocaleString();
+
 
 
 });
 
 
 
+
 botonOferta.onclick=pujar;
+
 
 
 rankingLive();
 
 
 }
+
 
 
 
@@ -524,7 +653,7 @@ function pujar(){
 
 
 
-let valor=
+let nuevoValor=
 
 datosSubasta.precioActual+
 
@@ -541,24 +670,35 @@ db.ref(
 .push({
 
 
+
 usuario:usuarioActual,
 
-valor:valor,
 
-fecha:new Date().toLocaleString()
+valor:nuevoValor,
+
+
+fecha:
+
+new Date().toLocaleString()
+
 
 
 });
 
 
 
+
+
 db.ref(
 
-"subastas/"+subastaActual+"/precioActual"
+"subastas/"+subastaActual+
+
+"/precioActual"
 
 )
 
-.set(valor);
+.set(nuevoValor);
+
 
 
 }
@@ -581,22 +721,36 @@ function rankingLive(){
 
 db.ref(
 
-"subastas/"+subastaActual+"/ofertas"
+"subastas/"+subastaActual+
+
+"/ofertas"
 
 )
 
-.on("value",s=>{
-
-
-let datos=[];
+.on("value",snap=>{
 
 
 
-s.forEach(x=>datos.push(x.val()));
+let lista=[];
 
 
 
-datos.sort((a,b)=>b.valor-a.valor);
+snap.forEach(x=>{
+
+
+lista.push(x.val());
+
+
+});
+
+
+
+
+lista.sort(
+
+(a,b)=>b.valor-a.valor
+
+);
 
 
 
@@ -604,19 +758,25 @@ ranking.innerHTML="";
 
 
 
-datos.slice(0,5)
+lista.slice(0,5)
 
 .forEach((x,i)=>{
 
 
 
-if(i==0)
+if(i===0){
+
 
 lider.innerHTML=x.usuario;
 
 
+}
 
-ranking.innerHTML+=`
+
+
+
+ranking.innerHTML += `
+
 
 <li>
 
@@ -628,10 +788,13 @@ $${x.valor.toLocaleString()}
 
 </li>
 
+
 `;
 
 
+
 });
+
 
 
 });
