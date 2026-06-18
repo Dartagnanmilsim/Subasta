@@ -1,8 +1,8 @@
 // ======================
-// FIREBASE SUBASTA PRO
+// FIREBASE
 // ======================
 
-const firebaseConfig = {
+const firebaseConfig={
 
 apiKey:"AIzaSyB2CneyvJ35naCILtwFNUo3hhPRFM4tkyo",
 
@@ -23,7 +23,7 @@ appId:"1:110324102442:web:055c40606660a2574b5a53"
 
 firebase.initializeApp(firebaseConfig);
 
-const db = firebase.database();
+const db=firebase.database();
 
 
 
@@ -32,24 +32,21 @@ const db = firebase.database();
 // ======================
 
 let usuarioActivo=null;
-
 let subastaActual="";
-
 let datosSubasta={};
-
 let imagenSubasta="";
+let reloj=null;
 
 
 
 // ======================
-// NAVEGACIÓN
+// NAVEGACION
 // ======================
 
 function mostrar(id){
 
 document.querySelectorAll(".pantalla")
 .forEach(p=>p.style.display="none");
-
 
 document.getElementById(id)
 .style.display="block";
@@ -58,48 +55,34 @@ document.getElementById(id)
 
 
 
-
-
 // ======================
-// CARGAR IMAGEN CELULAR
+// IMAGEN CELULAR
 // ======================
 
-function cargarImagen(event){
+function cargarImagen(e){
 
-
-let archivo=event.target.files[0];
-
+let archivo=e.target.files[0];
 
 if(!archivo)return;
 
 
-
-let lector=new FileReader();
-
+let reader=new FileReader();
 
 
-lector.onload=function(){
+reader.onload=function(){
 
-
-imagenSubasta=lector.result;
-
+imagenSubasta=reader.result;
 
 previewImagen.src=imagenSubasta;
 
-
 previewImagen.style.display="block";
-
-
-};
-
-
-
-lector.readAsDataURL(archivo);
-
 
 }
 
 
+reader.readAsDataURL(archivo);
+
+}
 
 
 
@@ -111,57 +94,48 @@ lector.readAsDataURL(archivo);
 
 function crearUsuario(){
 
-
-let user=usuario.value
-.trim()
-.toLowerCase();
-
+let user=
+usuario.value.trim().toLowerCase();
 
 
 if(
-nombre.value.trim()=="" ||
+nombre.value=="" ||
 user=="" ||
 password.value==""
 ){
 
-alert("Completa todos los datos");
-
+alert("Completa los datos");
 return;
 
 }
-
 
 
 if(!acepta.checked){
 
 alert("Debes aceptar la condición");
-
 return;
 
 }
-
 
 
 db.ref("usuarios/"+user)
 
-.once("value",snap=>{
+.once("value",s=>{
 
 
-if(snap.exists()){
+if(s.exists()){
 
 alert("Usuario ya existe");
-
 return;
 
 }
-
 
 
 db.ref("usuarios/"+user)
 
 .set({
 
-nombre:nombre.value.trim(),
+nombre:nombre.value,
 
 usuario:user,
 
@@ -169,33 +143,21 @@ clave:password.value,
 
 fecha:new Date().toLocaleString()
 
-})
-
-.then(()=>{
+});
 
 
-alert("Usuario creado correctamente");
+alert("Usuario creado");
 
 
 nombre.value="";
-
 usuario.value="";
-
 password.value="";
-
 acepta.checked=false;
 
 
 });
 
-
-});
-
-
 }
-
-
-
 
 
 
@@ -205,54 +167,38 @@ acepta.checked=false;
 // LOGIN USUARIO
 // ======================
 
-
 function entrarUsuario(){
 
-
-
-let user=loginUser.value
-.trim()
-.toLowerCase();
+let user=
+loginUser.value.trim().toLowerCase();
 
 
 
 db.ref("usuarios/"+user)
 
-.once("value",snap=>{
+.once("value",s=>{
 
 
-if(!snap.exists()){
+if(!s.exists()){
 
-alert("Usuario no existe");
-
+alert("No existe usuario");
 return;
 
 }
 
 
-
-let u=snap.val();
-
+let u=s.val();
 
 
 if(u.clave!==loginPass.value){
 
-alert("Contraseña incorrecta");
-
+alert("Clave incorrecta");
 return;
 
 }
 
 
-
 usuarioActivo=u;
-
-
-
-loginUser.value="";
-
-loginPass.value="";
-
 
 
 verSubastas();
@@ -260,12 +206,7 @@ verSubastas();
 
 });
 
-
 }
-
-
-
-
 
 
 
@@ -275,33 +216,22 @@ verSubastas();
 // ADMIN
 // ======================
 
-
 function loginAdmin(){
-
 
 
 if(clave.value!="1234"){
 
-
 alert("Clave incorrecta");
-
 return;
 
-
 }
-
 
 
 mostrar("admin");
 
-
 cargarAdmin();
 
-
 }
-
-
-
 
 
 
@@ -310,24 +240,7 @@ cargarAdmin();
 // CREAR SUBASTA
 // ======================
 
-
 function crearSubasta(){
-
-
-
-if(
-titulo.value=="" ||
-base.value=="" ||
-incremento.value==""
-){
-
-
-alert("Completa datos de la subasta");
-
-return;
-
-}
-
 
 
 let id="SUB_"+Date.now();
@@ -337,7 +250,6 @@ let id="SUB_"+Date.now();
 db.ref("subastas/"+id)
 
 .set({
-
 
 titulo:titulo.value,
 
@@ -355,40 +267,23 @@ estado:"ACTIVA",
 
 fin:fin.value,
 
-creada:new Date().toLocaleString()
+ganador:""
 
-
-})
-
-.then(()=>{
+});
 
 
 alert("Subasta creada");
 
 
-
 titulo.value="";
-
 descripcion.value="";
-
 base.value="";
-
 incremento.value="";
-
 fin.value="";
-
-
 imagenArchivo.value="";
-
-
 previewImagen.style.display="none";
 
-
 imagenSubasta="";
-
-
-});
-
 
 }
 
@@ -396,58 +291,50 @@ imagenSubasta="";
 
 
 
-
-
-
-
 // ======================
-// PANEL ADMIN
+// ADMIN PANEL
 // ======================
-
 
 function cargarAdmin(){
 
 
-// USUARIOS
-
+// usuarios
 
 db.ref("usuarios")
 
-.on("value",snap=>{
+.on("value",s=>{
 
 
 listaUsuarios.innerHTML="";
 
-
 let total=0;
 
 
-
-snap.forEach(x=>{
+s.forEach(x=>{
 
 
 total++;
 
-
 let u=x.val();
-
 
 
 listaUsuarios.innerHTML+=`
 
 <div class="usuario">
 
-👤 <b>${u.nombre}</b>
+👤 ${u.nombre}
 
 <br>
 
-Usuario: ${u.usuario}
+Usuario:${u.usuario}
 
 <br>
 
-Clave: ${u.clave}
+Clave:${u.clave}
+
 
 <button class="eliminar"
+
 onclick="eliminarUsuario('${x.key}')">
 
 Eliminar
@@ -462,7 +349,6 @@ Eliminar
 });
 
 
-
 totalUsuarios.innerHTML=
 
 "Usuarios inscritos: "+total;
@@ -473,40 +359,38 @@ totalUsuarios.innerHTML=
 
 
 
-
-// SUBASTAS
+// subastas
 
 
 db.ref("subastas")
 
-.on("value",snap=>{
+.on("value",s=>{
 
 
 adminSubastas.innerHTML="";
 
 
+s.forEach(x=>{
 
-snap.forEach(x=>{
 
-
-let s=x.val();
-
+let d=x.val();
 
 
 adminSubastas.innerHTML+=`
 
 <div class="item">
 
-<img class="foto" src="${s.imagen}">
-
-<h3>${s.titulo}</h3>
+<img class="foto" src="${d.imagen}">
 
 
-Valor actual:
+<h3>${d.titulo}</h3>
+
+
+Estado: ${d.estado}
 
 <br>
 
-$${s.precioActual.toLocaleString()}
+$${d.precioActual.toLocaleString()}
 
 
 <button class="eliminar"
@@ -517,44 +401,30 @@ Eliminar
 
 </button>
 
+
 </div>
 
 `;
 
-
-
 });
 
 
 });
-
 
 }
-
-
-
-
-
 
 
 
 function eliminarUsuario(id){
 
-
 db.ref("usuarios/"+id).remove();
 
-
 }
-
-
-
 
 
 function eliminarSubasta(id){
 
-
 db.ref("subastas/"+id).remove();
-
 
 }
 
@@ -562,42 +432,27 @@ db.ref("subastas/"+id).remove();
 
 
 
-
-
-
-
 // ======================
-// VER SUBASTAS
+// SUBASTAS
 // ======================
-
 
 function verSubastas(){
-
-
 
 mostrar("subastas");
 
 
-
 db.ref("subastas")
 
-.on("value",snap=>{
-
+.on("value",s=>{
 
 
 listaSubastas.innerHTML="";
 
 
-
-snap.forEach(x=>{
-
+s.forEach(x=>{
 
 
-let s=x.val();
-
-
-
-if(s.estado=="ACTIVA"){
+let d=x.val();
 
 
 
@@ -605,14 +460,13 @@ listaSubastas.innerHTML+=`
 
 <div class="item">
 
-<img class="foto" src="${s.imagen}">
+<img class="foto" src="${d.imagen}">
 
+<h2>${d.titulo}</h2>
 
-<h2>${s.titulo}</h2>
+<h3>$${d.precioActual.toLocaleString()}</h3>
 
-
-<h3>$${s.precioActual.toLocaleString()}</h3>
-
+Estado: ${d.estado}
 
 <button onclick="abrirSubasta('${x.key}')">
 
@@ -624,21 +478,12 @@ Entrar
 
 `;
 
-
-
-}
-
-
 });
 
 
 });
 
-
 }
-
-
-
 
 
 
@@ -648,40 +493,31 @@ Entrar
 // ABRIR SUBASTA
 // ======================
 
-
 function abrirSubasta(id){
 
-
-
 subastaActual=id;
-
 
 
 mostrar("detalle");
 
 
-
 db.ref("subastas/"+id)
 
-.on("value",snap=>{
+.on("value",s=>{
 
 
-datosSubasta=snap.val();
-
+datosSubasta=s.val();
 
 
 foto.src=datosSubasta.imagen;
 
 
 nombreSubasta.innerHTML=
-
 datosSubasta.titulo;
 
 
 texto.innerHTML=
-
 datosSubasta.descripcion;
-
 
 
 precio.innerHTML=
@@ -689,21 +525,91 @@ precio.innerHTML=
 "$"+datosSubasta.precioActual.toLocaleString();
 
 
-});
+controlTiempo();
 
+
+});
 
 
 btnPuja.onclick=pujar;
 
 
-
 rankingLive();
-
 
 }
 
 
 
+
+
+// ======================
+// CONTROL TIEMPO
+// ======================
+
+function controlTiempo(){
+
+
+clearInterval(reloj);
+
+
+
+reloj=setInterval(()=>{
+
+
+let ahora=Date.now();
+
+
+let final=
+new Date(datosSubasta.fin).getTime();
+
+
+
+let falta=final-ahora;
+
+
+
+if(falta<=0){
+
+
+tiempoRestante.innerHTML=
+"FINALIZADA";
+
+
+btnPuja.style.display="none";
+
+
+finalizarSubasta();
+
+
+clearInterval(reloj);
+
+
+return;
+
+}
+
+
+
+let h=Math.floor(falta/3600000);
+
+let m=Math.floor((falta%3600000)/60000);
+
+let s=Math.floor((falta%60000)/1000);
+
+
+
+tiempoRestante.innerHTML=
+
+h+"h "+m+"m "+s+"s";
+
+
+btnPuja.style.display="block";
+
+
+},1000);
+
+
+}
 
 
 
@@ -713,12 +619,19 @@ rankingLive();
 // PUJAR
 // ======================
 
-
 function pujar(){
 
 
+if(datosSubasta.estado=="FINALIZADA"){
 
-let nuevo=
+alert("Subasta terminada");
+return;
+
+}
+
+
+
+let valor=
 
 datosSubasta.precioActual+
 
@@ -734,18 +647,13 @@ db.ref(
 
 .push({
 
-
 usuario:usuarioActivo.usuario,
 
-nombre:usuarioActivo.nombre,
-
-valor:nuevo,
+valor:valor,
 
 fecha:new Date().toLocaleString()
 
-
 });
-
 
 
 
@@ -755,8 +663,26 @@ db.ref(
 
 )
 
-.set(nuevo);
+.set(valor);
 
+}
+
+
+
+
+
+// ======================
+// FINALIZAR
+// ======================
+
+function finalizarSubasta(){
+
+
+db.ref(
+"subastas/"+subastaActual+"/estado"
+)
+
+.set("FINALIZADA");
 
 
 }
@@ -765,13 +691,9 @@ db.ref(
 
 
 
-
-
-
 // ======================
 // TOP 5
 // ======================
-
 
 function rankingLive(){
 
@@ -782,30 +704,20 @@ db.ref(
 
 )
 
-.on("value",snap=>{
+.on("value",s=>{
 
 
 let lista=[];
 
 
-snap.forEach(x=>{
-
-lista.push(x.val());
-
-});
+s.forEach(x=>lista.push(x.val()));
 
 
-
-lista.sort(
-
-(a,b)=>b.valor-a.valor
-
-);
+lista.sort((a,b)=>b.valor-a.valor);
 
 
 
 ranking.innerHTML="";
-
 
 
 lista.slice(0,5)
@@ -813,10 +725,16 @@ lista.slice(0,5)
 .forEach((x,i)=>{
 
 
+if(i==0){
 
-if(i===0){
 
 lider.innerHTML=x.usuario;
+
+
+estadoFinal.innerHTML=
+
+"🏆 Ganador actual: "+x.usuario;
+
 
 }
 
@@ -835,7 +753,6 @@ $${x.valor.toLocaleString()}
 </li>
 
 `;
-
 
 
 });
