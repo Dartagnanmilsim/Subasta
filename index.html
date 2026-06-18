@@ -20,44 +20,30 @@
 <h1>🔨 SUBASTAS</h1>
 
 
+<div id="menu" class="card">
 
-<!-- MENU PRINCIPAL -->
-
-
-<div id="menu">
-
-
-<button onclick="mostrar('adminLogin')">
-
+<button onclick="mostrar('loginAdmin')">
 ⚙️ Administrador
-
 </button>
 
 
 <button onclick="cargarSubastas()">
-
 🔥 Subastas en curso
-
 </button>
 
 
 <button onclick="mostrar('registro')">
-
 👤 Crear usuario
-
 </button>
-
 
 </div>
 
 
 
+<!-- REGISTRO -->
 
-<!-- REGISTRO USUARIO -->
 
-
-<section id="registro" class="pantalla">
-
+<section id="registro" class="pantalla card">
 
 <h2>Crear usuario</h2>
 
@@ -72,10 +58,9 @@
 
 <input type="checkbox" id="acepta">
 
-Acepto pagar el valor ofertado si gano la subasta
+Acepto pagar el valor ofertado si gano
 
 </label>
-
 
 
 <button onclick="crearUsuario()">
@@ -91,11 +76,10 @@ Crear usuario
 
 
 
+<!-- LOGIN ADMIN -->
 
-<!-- ADMIN LOGIN -->
 
-
-<section id="adminLogin" class="pantalla">
+<section id="loginAdmin" class="pantalla card">
 
 
 <h2>Administrador</h2>
@@ -106,7 +90,7 @@ Crear usuario
 
 <button onclick="entrarAdmin()">
 
-Ingresar
+Entrar
 
 </button>
 
@@ -117,20 +101,27 @@ Ingresar
 
 
 
+<!-- ADMIN -->
 
 
-<!-- ADMIN CREAR SUBASTA -->
+<section id="admin" class="pantalla card">
 
 
-<section id="admin" class="pantalla">
+<h2>Crear subasta</h2>
 
 
-<h2>Nueva subasta</h2>
+<h3 id="totalUsuarios">
+
+Usuarios inscritos: 0
+
+</h3>
 
 
-<input id="titulo" placeholder="Nombre subasta">
+<input id="titulo" placeholder="Nombre producto">
+
 
 <input id="imagen" placeholder="URL imagen">
+
 
 <textarea id="descripcion" placeholder="Descripción"></textarea>
 
@@ -138,7 +129,7 @@ Ingresar
 <input id="base" type="number" placeholder="Precio base">
 
 
-<input id="incremento" type="number" placeholder="Incremento">
+<input id="incremento" type="number" placeholder="Incremento puja">
 
 
 <input id="fin" type="datetime-local">
@@ -151,18 +142,22 @@ Crear subasta
 </button>
 
 
+<h2>Subastas creadas</h2>
+
+
+<div id="adminSubastas"></div>
+
+
 </section>
 
 
 
 
 
+<!-- LISTA -->
 
 
-<!-- LISTA SUBASTAS -->
-
-
-<section id="subastas" class="pantalla">
+<section id="subastas" class="pantalla card">
 
 
 <h2>🔥 Activas</h2>
@@ -177,12 +172,10 @@ Crear subasta
 
 
 
+<!-- DETALLE -->
 
 
-<!-- DETALLE SUBASTA -->
-
-
-<section id="detalle" class="pantalla">
+<section id="detalle" class="pantalla card">
 
 
 <img id="foto" class="foto">
@@ -194,31 +187,21 @@ Crear subasta
 <p id="texto"></p>
 
 
-
 <div class="precio">
 
 
 🔥 Oferta ganadora
 
 
-<h1 id="valorActual">
+<h1 id="valorActual">$0</h1>
 
-$0
-
-</h1>
-
-
-<p>
 
 Ganando:
 
 <b id="lider">---</b>
 
-</p>
-
 
 </div>
-
 
 
 <button id="botonOferta">
@@ -226,8 +209,6 @@ Ganando:
 PUJAR
 
 </button>
-
-
 
 
 <h2>🏆 TOP 5</h2>
