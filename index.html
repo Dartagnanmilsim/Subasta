@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 
-<title>SubastaPro</title>
+<title>Subastas</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -17,124 +17,228 @@
 <body>
 
 
-<div class="app">
+<h1>🔨 SUBASTAS</h1>
 
 
-<!-- VISTA SUBASTA -->
+
+<!-- MENU PRINCIPAL -->
 
 
-<div class="card">
-
-<img id="imagenSubasta" class="imagen">
+<div id="menu">
 
 
-<h1 id="titulo">
-Subasta
-</h1>
+<button onclick="mostrar('adminLogin')">
+
+⚙️ Administrador
+
+</button>
 
 
-<p>Precio base</p>
+<button onclick="cargarSubastas()">
 
-<h2 id="base">
+🔥 Subastas en curso
+
+</button>
+
+
+<button onclick="mostrar('registro')">
+
+👤 Crear usuario
+
+</button>
+
+
+</div>
+
+
+
+
+<!-- REGISTRO USUARIO -->
+
+
+<section id="registro" class="pantalla">
+
+
+<h2>Crear usuario</h2>
+
+
+<input id="nombre" placeholder="Nombre completo">
+
+
+<input id="usuario" placeholder="Usuario público">
+
+
+<label>
+
+<input type="checkbox" id="acepta">
+
+Acepto pagar el valor ofertado si gano la subasta
+
+</label>
+
+
+
+<button onclick="crearUsuario()">
+
+Crear usuario
+
+</button>
+
+
+</section>
+
+
+
+
+
+
+<!-- ADMIN LOGIN -->
+
+
+<section id="adminLogin" class="pantalla">
+
+
+<h2>Administrador</h2>
+
+
+<input id="clave" placeholder="Contraseña">
+
+
+<button onclick="entrarAdmin()">
+
+Ingresar
+
+</button>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ADMIN CREAR SUBASTA -->
+
+
+<section id="admin" class="pantalla">
+
+
+<h2>Nueva subasta</h2>
+
+
+<input id="titulo" placeholder="Nombre subasta">
+
+<input id="imagen" placeholder="URL imagen">
+
+<textarea id="descripcion" placeholder="Descripción"></textarea>
+
+
+<input id="base" type="number" placeholder="Precio base">
+
+
+<input id="incremento" type="number" placeholder="Incremento">
+
+
+<input id="fin" type="datetime-local">
+
+
+<button onclick="crearSubasta()">
+
+Crear subasta
+
+</button>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- LISTA SUBASTAS -->
+
+
+<section id="subastas" class="pantalla">
+
+
+<h2>🔥 Activas</h2>
+
+
+<div id="listaSubastas"></div>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- DETALLE SUBASTA -->
+
+
+<section id="detalle" class="pantalla">
+
+
+<img id="foto" class="foto">
+
+
+<h2 id="nombreSubasta"></h2>
+
+
+<p id="texto"></p>
+
+
+
+<div class="precio">
+
+
+🔥 Oferta ganadora
+
+
+<h1 id="valorActual">
+
 $0
-</h2>
 
-
-<div class="ganando">
-
-🔥 Oferta más alta
-
-<h1 id="actual">
-$0
 </h1>
 
 
 <p>
+
 Ganando:
+
 <b id="lider">---</b>
+
 </p>
 
 
 </div>
 
 
-<button onclick="ofertar()">
+
+<button id="botonOferta">
 
 PUJAR
 
 </button>
 
 
-</div>
 
-
-
-<!-- TOP -->
-
-
-<div class="card">
 
 <h2>🏆 TOP 5</h2>
 
+
 <ol id="ranking"></ol>
 
-</div>
+
+</section>
 
 
-
-
-<!-- REGISTRO -->
-
-
-<div class="card">
-
-<h2>Registro</h2>
-
-
-<input id="nombre" placeholder="Nombre">
-
-<input id="celular" placeholder="Celular">
-
-<input id="correo" placeholder="Correo">
-
-
-</div>
-
-
-
-
-<!-- ADMIN -->
-
-
-<div class="card">
-
-<h2>Administrador</h2>
-
-
-<input id="clave" placeholder="Clave">
-
-<input id="producto" placeholder="Producto">
-
-<input id="foto" placeholder="URL imagen">
-
-<input id="precioBase" type="number" placeholder="Precio base">
-
-<input id="incremento" type="number" placeholder="Incremento">
-
-<input id="cierre" type="datetime-local">
-
-
-<button onclick="crearSubasta()">
-
-Crear Subasta
-
-</button>
-
-
-</div>
-
-
-</div>
 
 
 
