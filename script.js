@@ -1,46 +1,77 @@
-// =======================================
-// CONFIGURACIÓN FIREBASE
-// PEGAR LOS MISMOS DATOS DE LA APP POLLA
-// =======================================
+// =====================
+// FIREBASE EXISTENTE
+// =====================
 
-const firebaseConfig = {
+const firebaseConfig={
 
-apiKey: "TU_API_KEY",
+apiKey:"TU_API_KEY",
 
-authDomain: "TU_PROYECTO.firebaseapp.com",
+authDomain:"TU_PROYECTO.firebaseapp.com",
 
-databaseURL: "TU_DATABASE_URL",
+databaseURL:"TU_DATABASE_URL",
 
-projectId: "TU_ID"
+projectId:"TU_ID"
 
 };
 
 
 firebase.initializeApp(firebaseConfig);
 
-
-const db = firebase.database();
-
-
-
-// Variable global
-
-let subasta = {};
+const db=firebase.database();
 
 
 
+// VARIABLES
 
-// =======================================
-// CREAR SUBASTA ADMINISTRADOR
-// =======================================
-
-
-function crearSubasta(){
+let usuarioActual =
+localStorage.getItem("usuarioSubasta");
 
 
-if(clave.value !== "1234"){
+let subastaActual="";
 
-alert("Clave administrador incorrecta");
+let datosSubasta={};
+
+
+
+// =====================
+// NAVEGACIÓN
+// =====================
+
+
+function mostrar(id){
+
+document.querySelectorAll(".pantalla")
+.forEach(p=>p.style.display="none");
+
+
+document.getElementById(id)
+.style.display="block";
+
+}
+
+
+
+
+// =====================
+// CREAR USUARIO
+// =====================
+
+
+function crearUsuario(){
+
+
+if(!acepta.checked){
+
+alert("Debes aceptar la condición de pago");
+
+return;
+
+}
+
+
+if(!usuario.value){
+
+alert("Crea un usuario");
 
 return;
 
@@ -48,55 +79,82 @@ return;
 
 
 
-let datosSubasta = {
+db.ref("usuarios/"+usuario.value)
+
+.once("value",snap=>{
 
 
-producto: producto.value,
-
-imagen: foto.value,
-
-precioBase: Number(precioBase.value),
-
-precioActual: Number(precioBase.value),
-
-incremento: Number(incremento.value),
-
-cierre: cierre.value,
-
-estado: "ACTIVA",
-
-fechaCreacion: new Date().toLocaleString()
+if(snap.exists()){
 
 
-};
+alert("Usuario ya existe");
 
 
+}else{
 
-// Guarda configuración
 
-db.ref("subastas/configuracion")
+db.ref("usuarios/"+usuario.value)
 
-.set(datosSubasta);
+.set({
+
+nombre:nombre.value,
+
+usuario:usuario.value,
+
+acepta:true
+
+});
 
 
 
-// Limpia ofertas anteriores
+localStorage.setItem(
 
-db.ref("subastas/ofertas")
+"usuarioSubasta",
 
-.remove();
+usuario.value
 
-
-
-// Limpia ofertantes anteriores
-
-db.ref("subastas/ofertantes")
-
-.remove();
+);
 
 
+usuarioActual=usuario.value;
 
-alert("Subasta creada correctamente");
+
+alert("Usuario creado");
+
+
+}
+
+
+});
+
+
+}
+
+
+
+
+
+// =====================
+// ADMIN
+// =====================
+
+
+function entrarAdmin(){
+
+
+if(clave.value==="1234"){
+
+
+mostrar("admin");
+
+
+}else{
+
+
+alert("Clave incorrecta");
+
+
+}
 
 
 }
@@ -106,141 +164,246 @@ alert("Subasta creada correctamente");
 
 
 
-// =======================================
-// REALIZAR OFERTA
-// =======================================
+// =====================
+// CREAR SUBASTA
+// =====================
+
+
+function crearSubasta(){
+
+
+
+let id=Date.now();
+
+
+
+db.ref("subastas/"+id)
+
+.set({
+
+
+titulo:titulo.value,
+
+imagen:imagen.value,
+
+descripcion:descripcion.value,
+
+precioBase:Number(base.value),
+
+precioActual:Number(base.value),
+
+incremento:Number(incremento.value),
+
+fin:fin.value,
+
+estado:"ACTIVA"
+
+
+});
+
+
+
+alert("Subasta creada");
+
+
+}
+
+
+
+
+
+
+
+// =====================
+// LISTAR SUBASTAS
+// =====================
+
+
+function cargarSubastas(){
+
+
+mostrar("subastas");
+
+
+listaSubastas.innerHTML="";
+
+
+
+db.ref("subastas")
+
+.once("value",snap=>{
+
+
+snap.forEach(s=>{
+
+
+let x=s.val();
+
+
+
+if(x.estado==="ACTIVA"){
+
+
+
+listaSubastas.innerHTML +=
+
+
+`
+
+<div class="card">
+
+<h3>${x.titulo}</h3>
+
+<p>$${x.precioActual.toLocaleString()}</p>
+
+<button onclick="abrirSubasta('${s.key}')">
+
+Entrar
+
+</button>
+
+</div>
+
+`;
+
+
+}
+
+
+});
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+// =====================
+// ABRIR SUBASTA
+// =====================
+
+
+function abrirSubasta(id){
+
+
+
+if(!usuarioActual){
+
+
+alert("Primero debes crear usuario");
+
+
+return;
+
+
+}
+
+
+
+subastaActual=id;
+
+
+mostrar("detalle");
+
+
+
+db.ref("subastas/"+id)
+
+.on("value",snap=>{
+
+
+datosSubasta=snap.val();
+
+
+foto.src=datosSubasta.imagen;
+
+
+nombreSubasta.innerHTML=
+
+datosSubasta.titulo;
+
+
+texto.innerHTML=
+
+datosSubasta.descripcion;
+
+
+
+valorActual.innerHTML=
+
+"$"+datosSubasta.precioActual.toLocaleString();
+
+
+});
+
+
+
+botonOferta.onclick=ofertar;
+
+
+
+cargarRanking();
+
+
+}
+
+
+
+
+
+
+
+// =====================
+// OFERTAR
+// =====================
 
 
 function ofertar(){
 
 
 
-if(!subasta.estado){
+let nuevo=
 
+datosSubasta.precioActual+
 
-alert("No existe subasta activa");
-
-
-return;
-
-
-}
+datosSubasta.incremento;
 
 
 
-
-if(subasta.estado !== "ACTIVA"){
-
-
-alert("La subasta ya terminó");
+let oferta={
 
 
-return;
+usuario:usuarioActual,
 
+valor:nuevo,
 
-}
-
-
-
-
-
-if(!nombre.value || !celular.value){
-
-
-alert("Debes registrar nombre y celular");
-
-
-return;
-
-
-}
-
-
-
-
-
-// Validar hora de cierre
-
-if(new Date() > new Date(subasta.cierre)){
-
-
-
-db.ref("subastas/configuracion/estado")
-
-.set("FINALIZADA");
-
-
-
-alert("Tiempo de subasta terminado");
-
-
-return;
-
-
-}
-
-
-
-
-
-let nuevaOferta =
-
-subasta.precioActual + subasta.incremento;
-
-
-
-
-
-let oferta = {
-
-
-nombre: nombre.value,
-
-celular: celular.value,
-
-correo: correo.value,
-
-valor: nuevaOferta,
-
-fecha: new Date().toLocaleString()
+fecha:new Date().toLocaleString()
 
 
 };
 
 
 
+db.ref(
 
-// Guarda usuario
+"subastas/"+subastaActual+"/ofertas"
 
-db.ref("subastas/ofertantes")
-
-.push({
-
-nombre:nombre.value,
-
-celular:celular.value,
-
-correo:correo.value
-
-});
+).push(oferta);
 
 
 
 
-// Guarda oferta
+db.ref(
 
-db.ref("subastas/ofertas")
+"subastas/"+subastaActual+"/precioActual"
 
-.push(oferta);
-
-
-
-
-// Actualiza precio actual
-
-db.ref("subastas/configuracion/precioActual")
-
-.set(nuevaOferta);
+).set(nuevo);
 
 
 
@@ -252,104 +415,42 @@ db.ref("subastas/configuracion/precioActual")
 
 
 
-// =======================================
-// ESCUCHAR SUBASTA EN TIEMPO REAL
-// =======================================
+// =====================
+// RANKING
+// =====================
 
 
-db.ref("subastas/configuracion")
-
-.on("value", snapshot => {
-
-
-
-if(!snapshot.exists()){
-
-
-return;
-
-
-}
+function cargarRanking(){
 
 
 
-subasta = snapshot.val();
+db.ref(
+
+"subastas/"+subastaActual+"/ofertas"
+
+).on("value",snap=>{
 
 
 
-
-titulo.innerHTML =
-
-subasta.producto;
+let datos=[];
 
 
 
-imagenSubasta.src =
-
-subasta.imagen;
+snap.forEach(x=>{
 
 
-
-
-base.innerHTML =
-
-"$" + subasta.precioBase.toLocaleString();
-
-
-
-
-actual.innerHTML =
-
-"$" + subasta.precioActual.toLocaleString();
-
+datos.push(x.val());
 
 
 });
 
 
 
+datos.sort(
 
+(a,b)=>b.valor-a.valor
 
-
-
-
-
-// =======================================
-// RANKING TOP 5 EN VIVO
-// =======================================
-
-
-db.ref("subastas/ofertas")
-
-.on("value", snapshot => {
-
-
-
-let lista = [];
-
-
-
-snapshot.forEach(item=>{
-
-
-lista.push(item.val());
-
-
-});
-
-
-
-
-// ordenar mayor a menor
-
-lista.sort((a,b)=>{
-
-
-return b.valor - a.valor;
-
-
-});
-
+);
 
 
 
@@ -357,61 +458,33 @@ ranking.innerHTML="";
 
 
 
+datos.slice(0,5)
 
-if(lista.length===0){
-
-
-
-lider.innerHTML="Sin ofertas";
-
-return;
-
-
-}
+.forEach((x,i)=>{
 
 
 
+if(i===0){
 
-
-lista.slice(0,5)
-
-.forEach((persona,index)=>{
-
-
-
-if(index===0){
-
-
-lider.innerHTML = persona.nombre;
-
+lider.innerHTML=x.usuario;
 
 }
 
 
 
+ranking.innerHTML +=
 
-
-ranking.innerHTML += `
-
+`
 
 <li>
 
-<strong>
-
-${index+1}. ${persona.nombre}
-
-</strong>
+🏆 ${x.usuario}
 
 <br>
 
-💰 $${persona.valor.toLocaleString()}
-
-<br>
-
-🕒 ${persona.fecha}
+$${x.valor.toLocaleString()}
 
 </li>
-
 
 `;
 
@@ -420,32 +493,7 @@ ${index+1}. ${persona.nombre}
 });
 
 
-
 });
-
-
-
-
-
-
-
-// =======================================
-// CERRAR SUBASTA MANUAL ADMIN
-// =======================================
-
-
-function cerrarSubasta(){
-
-
-
-db.ref("subastas/configuracion/estado")
-
-.set("FINALIZADA");
-
-
-
-alert("Subasta cerrada");
-
 
 
 }
