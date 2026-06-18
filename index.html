@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
+
 <title>Subasta Pro</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,96 +13,178 @@
 
 </head>
 
+
 <body>
 
-<h1>🔨 Subasta Pro</h1>
+
+<h1>🔨 SUBASTA PRO</h1>
 
 
-<!-- MENU -->
 
 <div class="card">
+
 
 <button onclick="mostrar('adminLogin')">
 ⚙️ Administrador
 </button>
 
-<button onclick="verSubastas()">
+
+<button onclick="mostrar('loginUsuario')">
 🔥 Subastas en curso
 </button>
 
+
 <button onclick="mostrar('registro')">
-👤 Registrar usuario
+👤 Crear usuario
 </button>
+
 
 </div>
 
 
 
-<!-- REGISTRO -->
+
+<!-- CREAR USUARIO -->
+
 
 <section id="registro" class="pantalla card">
 
+
 <h2>Crear usuario</h2>
+
 
 <input id="nombre" placeholder="Nombre completo">
 
-<input id="usuario" placeholder="Usuario público">
+
+<input id="usuario" placeholder="Usuario subasta">
+
+
+<input id="password" type="password" placeholder="Contraseña">
+
 
 <label>
+
 <input type="checkbox" id="acepta">
+
 Acepto pagar el valor ofertado si gano
+
 </label>
 
+
 <button onclick="crearUsuario()">
+
 Crear usuario
+
 </button>
 
+
 </section>
+
+
+
+
+
+<!-- LOGIN USUARIO -->
+
+
+<section id="loginUsuario" class="pantalla card">
+
+
+<h2>Ingreso participante</h2>
+
+
+<input id="loginUser" placeholder="Usuario">
+
+
+<input id="loginPass" type="password" placeholder="Contraseña">
+
+
+<button onclick="entrarUsuario()">
+
+Entrar a subastas
+
+</button>
+
+
+</section>
+
+
+
 
 
 
 <!-- ADMIN LOGIN -->
 
+
 <section id="adminLogin" class="pantalla card">
+
 
 <h2>Administrador</h2>
 
-<input id="clave" placeholder="Contraseña">
+
+<input id="clave" type="password" placeholder="Clave">
+
 
 <button onclick="loginAdmin()">
+
 Entrar
+
 </button>
 
+
 </section>
+
+
+
 
 
 
 
 <!-- ADMIN -->
 
+
 <section id="admin" class="pantalla card">
+
 
 <h2>Panel administrador</h2>
 
+
 <h3 id="totalUsuarios">
-Usuarios inscritos: 0
+
+Usuarios: 0
+
 </h3>
 
-<input id="titulo" placeholder="Nombre subasta">
+
+
+<h2>Crear subasta</h2>
+
+
+<input id="titulo" placeholder="Producto">
+
 
 <input id="imagen" placeholder="URL imagen">
 
+
 <textarea id="descripcion" placeholder="Descripción"></textarea>
+
 
 <input id="base" type="number" placeholder="Precio base">
 
+
 <input id="incremento" type="number" placeholder="Incremento">
+
 
 <input id="fin" type="datetime-local">
 
+
 <button onclick="crearSubasta()">
+
 Crear subasta
+
 </button>
+
+
 
 
 <h2>Subastas creadas</h2>
@@ -108,58 +192,87 @@ Crear subasta
 <div id="adminSubastas"></div>
 
 
+
+<h2>Usuarios registrados</h2>
+
+<div id="listaUsuarios"></div>
+
+
 </section>
 
 
 
 
-<!-- SUBASTAS ACTIVAS -->
+
+
+
+<!-- SUBASTAS -->
+
 
 <section id="subastas" class="pantalla card">
 
+
 <h2>🔥 Subastas activas</h2>
+
 
 <div id="listaSubastas"></div>
 
+
 </section>
+
+
 
 
 
 
 <!-- DETALLE -->
 
+
 <section id="detalle" class="pantalla card">
+
 
 <img id="foto" class="foto">
 
+
 <h2 id="nombreSubasta"></h2>
+
 
 <p id="texto"></p>
 
 
 <div class="oferta">
 
-🔥 Oferta más alta
+
+🔥 VA GANANDO
+
 
 <h1 id="precio">$0</h1>
 
-Ganando:
+
 <b id="lider">---</b>
+
 
 </div>
 
 
+
 <button id="btnPuja">
+
 PUJAR
+
 </button>
 
 
+
 <h2>🏆 TOP 5</h2>
+
 
 <ol id="ranking"></ol>
 
 
 </section>
+
+
 
 
 
@@ -172,5 +285,7 @@ PUJAR
 <script src="script.js"></script>
 
 
+
 </body>
+
 </html>
