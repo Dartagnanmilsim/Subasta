@@ -20,7 +20,6 @@
 <h1>🔨 SUBASTA PRO</h1>
 
 
-
 <div class="card">
 
 <button onclick="mostrar('adminLogin')">
@@ -39,16 +38,21 @@
 
 
 
+
 <!-- REGISTRO -->
 
 
 <section id="registro" class="pantalla card">
 
+
 <h2>Crear usuario</h2>
+
 
 <input id="nombre" placeholder="Nombre completo">
 
+
 <input id="usuario" placeholder="Usuario">
+
 
 <input id="password" type="password" placeholder="Contraseña">
 
@@ -68,6 +72,7 @@ Crear usuario
 
 </button>
 
+
 </section>
 
 
@@ -80,9 +85,12 @@ Crear usuario
 
 <section id="loginUsuario" class="pantalla card">
 
+
 <h2>Ingreso participante</h2>
 
+
 <input id="loginUser" placeholder="Usuario">
+
 
 <input id="loginPass" type="password" placeholder="Contraseña">
 
@@ -101,12 +109,15 @@ Entrar
 
 
 
+
 <!-- ADMIN LOGIN -->
 
 
 <section id="adminLogin" class="pantalla card">
 
+
 <h2>Administrador</h2>
+
 
 <input id="clave" type="password" placeholder="Clave administrador">
 
@@ -116,6 +127,7 @@ Entrar
 Ingresar
 
 </button>
+
 
 </section>
 
@@ -136,8 +148,11 @@ Ingresar
 
 
 <h3 id="totalUsuarios">
-Usuarios inscritos: 0
+
+Usuarios inscritos:0
+
 </h3>
+
 
 
 
@@ -162,6 +177,7 @@ style="display:none"
 >
 
 
+
 <textarea id="descripcion" placeholder="Descripción"></textarea>
 
 
@@ -183,7 +199,9 @@ Crear subasta
 
 
 
+
 <h2>Subastas creadas</h2>
+
 
 <div id="adminSubastas"></div>
 
@@ -192,7 +210,9 @@ Crear subasta
 
 <h2>Usuarios registrados</h2>
 
+
 <div id="listaUsuarios"></div>
+
 
 
 </section>
@@ -216,6 +236,7 @@ Crear subasta
 
 
 </section>
+
 
 
 
@@ -255,6 +276,23 @@ Ganando:
 <b id="lider">---</b>
 
 
+
+<hr>
+
+
+⏳ Tiempo restante
+
+
+<h2 id="tiempoRestante">
+
+--
+
+</h2>
+
+
+<h2 id="estadoFinal"></h2>
+
+
 </div>
 
 
@@ -264,6 +302,7 @@ Ganando:
 PUJAR
 
 </button>
+
 
 
 
@@ -289,6 +328,7 @@ PUJAR
 
 
 <script src="script.js"></script>
+
 
 
 </body>
