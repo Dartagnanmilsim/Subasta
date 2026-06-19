@@ -20,6 +20,7 @@
 <h1>🔨 SUBASTA PRO</h1>
 
 
+
 <div class="card">
 
 <button onclick="mostrar('adminLogin')">
@@ -39,7 +40,9 @@
 
 
 
-<!-- REGISTRO -->
+<!-- =====================
+CREAR USUARIO
+====================== -->
 
 
 <section id="registro" class="pantalla card">
@@ -51,7 +54,7 @@
 <input id="nombre" placeholder="Nombre completo">
 
 
-<input id="usuario" placeholder="Usuario">
+<input id="usuario" placeholder="Usuario para subasta">
 
 
 <input id="password" type="password" placeholder="Contraseña">
@@ -59,9 +62,9 @@
 
 <label>
 
-<input type="checkbox" id="acepta">
+<input id="acepta" type="checkbox">
 
-Acepto pagar el valor ofertado si gano
+Acepto pagar el valor ofertado si gano la subasta
 
 </label>
 
@@ -80,7 +83,10 @@ Crear usuario
 
 
 
-<!-- LOGIN USUARIO -->
+
+<!-- =====================
+LOGIN PARTICIPANTE
+====================== -->
 
 
 <section id="loginUsuario" class="pantalla card">
@@ -97,7 +103,7 @@ Crear usuario
 
 <button onclick="entrarUsuario()">
 
-Entrar
+Entrar a subastas
 
 </button>
 
@@ -110,7 +116,9 @@ Entrar
 
 
 
-<!-- ADMIN LOGIN -->
+<!-- =====================
+ADMIN LOGIN
+====================== -->
 
 
 <section id="adminLogin" class="pantalla card">
@@ -119,7 +127,11 @@ Entrar
 <h2>Administrador</h2>
 
 
-<input id="clave" type="password" placeholder="Clave administrador">
+<input 
+id="clave" 
+type="password" 
+placeholder="Contraseña administrador"
+>
 
 
 <button onclick="loginAdmin()">
@@ -138,7 +150,9 @@ Ingresar
 
 
 
-<!-- ADMIN -->
+<!-- =====================
+ADMINISTRADOR
+====================== -->
 
 
 <section id="admin" class="pantalla card">
@@ -147,47 +161,96 @@ Ingresar
 <h2>Panel administrador</h2>
 
 
+
 <h3 id="totalUsuarios">
 
-Usuarios inscritos:0
+Usuarios inscritos: 0
 
 </h3>
 
 
 
 
-<h2>Nueva subasta</h2>
 
+<h2>Crear subasta</h2>
 
-<input id="titulo" placeholder="Nombre producto">
 
 
 <input 
-id="imagenArchivo"
-type="file"
-accept="image/*"
-onchange="cargarImagen(event)"
+id="titulo" 
+placeholder="Nombre de la subasta"
 >
+
+
+
+<input
+
+id="imagenArchivo"
+
+type="file"
+
+accept="image/*"
+
+onchange="cargarImagen(event)"
+
+>
+
 
 
 <img 
+
 id="previewImagen"
+
 class="foto"
+
 style="display:none"
+
 >
 
 
 
-<textarea id="descripcion" placeholder="Descripción"></textarea>
+<textarea 
+
+id="descripcion"
+
+placeholder="Descripción de la subasta"
+
+></textarea>
 
 
-<input id="base" type="number" placeholder="Precio base">
+
+<input 
+
+id="base"
+
+type="number"
+
+placeholder="Precio base"
+
+>
 
 
-<input id="incremento" type="number" placeholder="Incremento mínimo">
+
+<input 
+
+id="incremento"
+
+type="number"
+
+placeholder="Incremento por puja"
+
+>
 
 
-<input id="fin" type="datetime-local">
+
+<input
+
+id="fin"
+
+type="datetime-local"
+
+>
+
 
 
 <button onclick="crearSubasta()">
@@ -208,7 +271,8 @@ Crear subasta
 
 
 
-<h2>Usuarios registrados</h2>
+
+<h2>Usuarios creados</h2>
 
 
 <div id="listaUsuarios"></div>
@@ -223,7 +287,10 @@ Crear subasta
 
 
 
-<!-- SUBASTAS -->
+
+<!-- =====================
+SUBASTAS ACTIVAS
+====================== -->
 
 
 <section id="subastas" class="pantalla card">
@@ -244,43 +311,68 @@ Crear subasta
 
 
 
-<!-- DETALLE -->
+
+<!-- =====================
+DETALLE SUBASTA
+====================== -->
 
 
 <section id="detalle" class="pantalla card">
 
 
+
 <img id="foto" class="foto">
 
 
+
 <h2 id="nombreSubasta"></h2>
+
 
 
 <p id="texto"></p>
 
 
 
+
+
 <div class="oferta">
+
 
 
 🔥 Oferta más alta
 
 
-<h1 id="precio">$0</h1>
+
+<h1 id="precio">
+
+$0
+
+</h1>
+
+
 
 
 Ganando:
 
+
 <br>
 
-<b id="lider">---</b>
+
+<b id="lider">
+
+---
+
+</b>
+
 
 
 
 <hr>
 
 
+
 ⏳ Tiempo restante
+
 
 
 <h2 id="tiempoRestante">
@@ -290,10 +382,18 @@ Ganando:
 </h2>
 
 
-<h2 id="estadoFinal"></h2>
+
+
+
+<h2 id="estadoFinal">
+
+</h2>
+
 
 
 </div>
+
+
 
 
 
@@ -306,7 +406,14 @@ PUJAR
 
 
 
-<h2>🏆 TOP 5</h2>
+
+<h2>
+
+🏆 TOP 5
+
+</h2>
+
+
 
 
 <ol id="ranking"></ol>
@@ -321,10 +428,13 @@ PUJAR
 
 
 
+
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 
 
 <script src="script.js"></script>
