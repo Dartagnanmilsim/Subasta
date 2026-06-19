@@ -2,33 +2,24 @@
 // FIREBASE
 // ======================
 
-const firebaseConfig = {
+const firebaseConfig={
 
 apiKey:"AIzaSyB2CneyvJ35naCILtwFNUo3hhPRFM4tkyo",
-
 authDomain:"subasta-pro.firebaseapp.com",
-
 databaseURL:"https://subasta-pro-default-rtdb.firebaseio.com",
-
 projectId:"subasta-pro",
-
 storageBucket:"subasta-pro.firebasestorage.app",
-
 messagingSenderId:"110324102442",
-
 appId:"1:110324102442:web:055c40606660a2574b5a53"
 
 };
-
 
 firebase.initializeApp(firebaseConfig);
 
 const db=firebase.database();
 
 
-// ======================
 // VARIABLES
-// ======================
 
 let usuarioActivo=null;
 let subastaActual="";
@@ -38,21 +29,22 @@ let reloj=null;
 
 
 // ======================
-// NAVEGACION
+// PANTALLAS
 // ======================
 
 function mostrar(id){
 
 document.querySelectorAll(".pantalla")
-.forEach(p=>p.style.display="none");
+.forEach(x=>x.style.display="none");
 
 document.getElementById(id).style.display="block";
 
 }
 
 
+
 // ======================
-// CARGAR IMAGEN
+// IMAGEN
 // ======================
 
 function cargarImagen(e){
@@ -61,11 +53,13 @@ let archivo=e.target.files[0];
 
 if(!archivo)return;
 
-let reader=new FileReader();
 
-reader.onload=function(){
+let lector=new FileReader();
 
-imagenSubasta=reader.result;
+
+lector.onload=function(){
+
+imagenSubasta=lector.result;
 
 previewImagen.src=imagenSubasta;
 
@@ -73,26 +67,25 @@ previewImagen.style.display="block";
 
 }
 
-reader.readAsDataURL(archivo);
+lector.readAsDataURL(archivo);
 
 }
 
 
+
 // ======================
-// CREAR USUARIO
+// USUARIOS
 // ======================
 
 function crearUsuario(){
 
 let user=usuario.value.trim().toLowerCase();
 
-if(
-nombre.value=="" ||
-user=="" ||
-password.value==""
-){
+
+if(!nombre.value || !user || !password.value){
 
 alert("Completa los datos");
+
 return;
 
 }
@@ -100,7 +93,8 @@ return;
 
 if(!acepta.checked){
 
-alert("Debes aceptar pagar si ganas");
+alert("Debes aceptar la condición");
+
 return;
 
 }
@@ -113,21 +107,20 @@ db.ref("usuarios/"+user)
 
 if(s.exists()){
 
-alert("Usuario ya existe");
+alert("Usuario existe");
+
 return;
 
 }
 
 
-db.ref("usuarios/"+user).set({
+db.ref("usuarios/"+user)
+
+.set({
 
 nombre:nombre.value,
-
 usuario:user,
-
-clave:password.value,
-
-fecha:new Date().toLocaleString()
+clave:password.value
 
 });
 
@@ -143,16 +136,12 @@ acepta.checked=false;
 
 });
 
-
 }
 
 
 
-// ======================
-// LOGIN PARTICIPANTE
-// ======================
-
 function entrarUsuario(){
+
 
 let user=loginUser.value.trim().toLowerCase();
 
@@ -165,6 +154,7 @@ db.ref("usuarios/"+user)
 if(!s.exists()){
 
 alert("Usuario no existe");
+
 return;
 
 }
@@ -176,13 +166,13 @@ let u=s.val();
 if(u.clave!==loginPass.value){
 
 alert("Clave incorrecta");
+
 return;
 
 }
 
 
 usuarioActivo=u;
-
 
 verSubastas();
 
@@ -191,6 +181,8 @@ verSubastas();
 
 
 }
+
+
 
 
 
@@ -204,6 +196,7 @@ function loginAdmin(){
 if(clave.value!="1234"){
 
 alert("Clave incorrecta");
+
 return;
 
 }
@@ -213,8 +206,9 @@ mostrar("admin");
 
 cargarAdmin();
 
-
 }
+
+
 
 
 
@@ -222,30 +216,29 @@ cargarAdmin();
 // CREAR SUBASTA
 // ======================
 
+
 function crearSubasta(){
 
 
 let id="SUB_"+Date.now();
 
 
-db.ref("subastas/"+id).set({
+db.ref("subastas/"+id)
 
+.set({
 
 titulo:titulo.value,
-
 imagen:imagenSubasta,
-
 descripcion:descripcion.value,
 
 precioBase:Number(base.value),
-
 precioActual:Number(base.value),
 
 incremento:Number(incremento.value),
 
-estado:"ACTIVA",
+fin:fin.value,
 
-fin:fin.value
+estado:"ACTIVA"
 
 });
 
@@ -253,28 +246,20 @@ fin:fin.value
 alert("Subasta creada");
 
 
-titulo.value="";
-descripcion.value="";
-base.value="";
-incremento.value="";
-fin.value="";
-imagenArchivo.value="";
-previewImagen.style.display="none";
-imagenSubasta="";
-
-
 }
 
 
 
 // ======================
-// PANEL ADMIN
+// ADMIN PANEL
 // ======================
+
 
 function cargarAdmin(){
 
 
-// usuarios
+// USUARIOS
+
 
 db.ref("usuarios")
 
@@ -309,7 +294,6 @@ Usuario: ${u.usuario}
 
 Clave: ${u.clave}
 
-
 <button class="eliminar"
 onclick="eliminarUsuario('${x.key}')">
 
@@ -317,11 +301,9 @@ Eliminar
 
 </button>
 
-
 </div>
 
 `;
-
 
 });
 
@@ -334,7 +316,11 @@ totalUsuarios.innerHTML=
 });
 
 
-// subastas
+
+
+
+// SUBASTAS EDITABLES
+
 
 db.ref("subastas")
 
@@ -354,15 +340,54 @@ adminSubastas.innerHTML+=`
 
 <div class="item">
 
+
 <img class="foto" src="${d.imagen}">
 
-<h3>${d.titulo}</h3>
 
-Estado: ${d.estado}
+<input 
+id="titulo_${x.key}"
+value="${d.titulo}"
+>
 
-<br>
 
-Valor: $${d.precioActual.toLocaleString()}
+<textarea id="descripcion_${x.key}">
+
+${d.descripcion}
+
+</textarea>
+
+
+<input 
+id="base_${x.key}"
+type="number"
+value="${d.precioBase}"
+>
+
+
+<input
+id="incremento_${x.key}"
+type="number"
+value="${d.incremento}"
+>
+
+
+<input
+id="fin_${x.key}"
+type="datetime-local"
+value="${d.fin}"
+>
+
+
+Estado:
+
+${d.estado}
+
+
+<button onclick="editarSubasta('${x.key}')">
+
+💾 Guardar cambios
+
+</button>
 
 
 <button class="eliminar"
@@ -387,12 +412,60 @@ Eliminar
 
 
 
+
+// ======================
+// EDITAR SUBASTA
+// ======================
+
+
+function editarSubasta(id){
+
+
+db.ref("subastas/"+id)
+
+.update({
+
+
+titulo:
+document.getElementById("titulo_"+id).value,
+
+
+descripcion:
+document.getElementById("descripcion_"+id).value,
+
+
+precioBase:Number(
+document.getElementById("base_"+id).value
+),
+
+
+incremento:Number(
+document.getElementById("incremento_"+id).value
+),
+
+
+fin:
+document.getElementById("fin_"+id).value
+
+
+})
+
+.then(()=>{
+
+alert("Subasta actualizada");
+
+});
+
+
+}
+
+
+
 function eliminarUsuario(id){
 
 db.ref("usuarios/"+id).remove();
 
 }
-
 
 
 function eliminarSubasta(id){
@@ -402,9 +475,11 @@ db.ref("subastas/"+id).remove();
 }
 
 
+
 // ======================
-// SUBASTAS ACTIVAS
+// VER SUBASTAS
 // ======================
+
 
 function verSubastas(){
 
@@ -431,9 +506,15 @@ listaSubastas.innerHTML+=`
 
 <img class="foto" src="${d.imagen}">
 
+
 <h2>${d.titulo}</h2>
 
-<h3>$${d.precioActual.toLocaleString()}</h3>
+
+<h3>
+
+$${d.precioActual.toLocaleString()}
+
+</h3>
 
 
 <button onclick="abrirSubasta('${x.key}')">
@@ -441,6 +522,7 @@ listaSubastas.innerHTML+=`
 Entrar
 
 </button>
+
 
 </div>
 
@@ -457,10 +539,12 @@ Entrar
 
 
 // ======================
-// ABRIR SUBASTA
+// ABRIR
 // ======================
 
+
 function abrirSubasta(id){
+
 
 subastaActual=id;
 
@@ -507,23 +591,24 @@ rankingLive();
 // PUJAR
 // ======================
 
+
 function pujar(){
 
 
 if(datosSubasta.estado=="FINALIZADA"){
 
-alert("Subasta terminada");
+alert("Terminada");
+
 return;
 
 }
 
 
-let nuevo=
+let valor=
 
 datosSubasta.precioActual+
 
 datosSubasta.incremento;
-
 
 
 db.ref(
@@ -532,37 +617,32 @@ db.ref(
 
 .push({
 
-
 usuario:usuarioActivo.usuario,
 
-nombre:usuarioActivo.nombre,
-
-valor:nuevo,
-
-fecha:new Date().toLocaleString()
-
+valor:valor
 
 });
-
 
 
 db.ref(
 "subastas/"+subastaActual+"/precioActual"
 )
 
-.set(nuevo);
+.set(valor);
 
 
 }
 
 
 
+
+
 // ======================
-// CONTROL TIEMPO
+// TIEMPO
 // ======================
+
 
 function controlTiempo(){
-
 
 clearInterval(reloj);
 
@@ -577,18 +657,23 @@ new Date(datosSubasta.fin).getTime()
 -Date.now();
 
 
+
 if(falta<=0){
 
 
 tiempoRestante.innerHTML="FINALIZADA";
 
+
 btnPuja.style.display="none";
 
 
-db.ref(
-"subastas/"+subastaActual+"/estado"
-)
-.set("FINALIZADA");
+db.ref("subastas/"+subastaActual)
+
+.update({
+
+estado:"FINALIZADA"
+
+});
 
 
 clearInterval(reloj);
@@ -618,9 +703,12 @@ h+"h "+m+"m "+s+"s";
 
 
 
+
+
 // ======================
-// TOP 5 HISTORICO REAL
+// TOP 5 REAL
 // ======================
+
 
 function rankingLive(){
 
@@ -641,15 +729,12 @@ s.forEach(x=>{
 let p=x.val();
 
 
-if(
-!usuarios[p.usuario] ||
-p.valor>usuarios[p.usuario].valor
-){
+if(!usuarios[p.usuario] ||
+p.valor>usuarios[p.usuario].valor){
 
 usuarios[p.usuario]=p;
 
 }
-
 
 });
 
@@ -657,30 +742,26 @@ usuarios[p.usuario]=p;
 let lista=Object.values(usuarios);
 
 
-lista.sort(
-(a,b)=>b.valor-a.valor
-);
+lista.sort((a,b)=>b.valor-a.valor);
 
 
 ranking.innerHTML="";
 
 
-lista.forEach((x,i)=>{
+lista.slice(0,5)
+
+.forEach((x,i)=>{
 
 
 if(i==0){
 
 lider.innerHTML=x.usuario;
 
-
 estadoFinal.innerHTML=
 
 "🏆 Ganador actual:<br>"+x.usuario;
 
 }
-
-
-if(i<5){
 
 
 ranking.innerHTML+=`
@@ -696,9 +777,6 @@ $${x.valor.toLocaleString()}
 </li>
 
 `;
-
-}
-
 
 });
 
