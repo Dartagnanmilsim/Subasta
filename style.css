@@ -1,3 +1,7 @@
+/* =====================
+GENERAL
+===================== */
+
 body{
 
 margin:0;
@@ -14,6 +18,10 @@ text-align:center;
 
 }
 
+
+/* =====================
+TARJETAS
+===================== */
 
 .card{
 
@@ -33,6 +41,12 @@ display:none;
 }
 
 
+
+/* =====================
+BOTONES
+===================== */
+
+
 button{
 
 width:100%;
@@ -43,8 +57,32 @@ border-radius:18px;
 background:#ff9800;
 font-size:18px;
 font-weight:bold;
+cursor:pointer;
 
 }
+
+
+
+button:active{
+
+transform:scale(.98);
+
+}
+
+
+
+.eliminar{
+
+background:#d32f2f;
+color:white;
+
+}
+
+
+
+/* =====================
+FORMULARIOS
+===================== */
 
 
 input,
@@ -61,6 +99,7 @@ font-size:16px;
 }
 
 
+
 textarea{
 
 height:100px;
@@ -68,12 +107,20 @@ height:100px;
 }
 
 
+
 label{
 
 display:block;
 margin-top:15px;
+font-size:16px;
 
 }
+
+
+
+/* =====================
+IMAGEN SUBASTA
+===================== */
 
 
 .foto{
@@ -85,6 +132,12 @@ border-radius:22px;
 margin-top:15px;
 
 }
+
+
+
+/* =====================
+PANEL OFERTA
+===================== */
 
 
 .oferta{
@@ -99,6 +152,7 @@ margin-top:20px;
 }
 
 
+
 #precio{
 
 font-size:45px;
@@ -106,18 +160,28 @@ font-size:45px;
 }
 
 
+
 #tiempoRestante{
 
-font-size:28px;
+font-size:32px;
+font-weight:bold;
 
 }
+
 
 
 #estadoFinal{
 
 color:#ff9800;
+font-size:24px;
 
 }
+
+
+
+/* =====================
+LISTAS
+===================== */
 
 
 .item{
@@ -130,6 +194,7 @@ margin-bottom:15px;
 }
 
 
+
 .usuario{
 
 background:#eeeeee;
@@ -139,13 +204,6 @@ margin-bottom:10px;
 
 }
 
-
-.eliminar{
-
-background:#d32f2f;
-color:white;
-
-}
 
 
 li{
